@@ -1,11 +1,12 @@
 package com.kano.springbootmongoclothesapi.controller.LoginRegister;
 
-import com.kano.springbootmongoclothesapi.model.User;
+import com.kano.springbootmongoclothesapi.common.ApiResponse;
 import com.kano.springbootmongoclothesapi.service.UserService;
-import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 
 /**
@@ -17,11 +18,25 @@ public class LoginController {
     @Autowired
     private UserService userService;
 
+
     //登录
+    // POST 请求，将 JSON 转换为 Map
     @PostMapping
-    public ResponseEntity<User> doLogin(@Valid @RequestBody User user) {
-        User createdUser = userService.createUser(user);
-        return ResponseEntity.ok(createdUser);
+    public ApiResponse doLogin(@RequestBody Map<String, String> userLogin) throws Exception {
+
+        String username = userLogin.get("username");
+        String password = userLogin.get("password");
+        if(username == null || password == null) {  return new ApiResponse(500,"参数错误",null); }
+
+        Object res =  userService.login(username,password);
+        System.out.println(username + password);
+
+
+        if(res.equals(false)){
+            return new ApiResponse(500,"用户名或密码错误",null);
+        }
+
+        return new ApiResponse(200,"登录成功",res);
     }
 
 }
