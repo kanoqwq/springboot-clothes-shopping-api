@@ -29,8 +29,6 @@ public class LoginController {
         if(username == null || password == null) {  return new ApiResponse(500,"参数错误",null); }
 
         Object res =  userService.login(username,password);
-        System.out.println(username + password);
-
 
         if(res.equals(false)){
             return new ApiResponse(500,"用户名或密码错误",null);

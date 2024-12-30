@@ -52,6 +52,23 @@ public class UserService {
     }
 
     /**
+     * 更新当前用户
+     */
+    public User updateSelfUser(String id, User user) {
+        Optional<User> res = getUserById(id);
+        if(res.isPresent()) {
+            if(!Objects.equals(user.getRole(), res.get().getRole())) {
+                return null;
+            }
+            if (res.get().getId().equals(id)) {
+                user.setId(id);
+                return userRepository.save(user);
+            }
+        }
+        return null;
+    }
+
+    /**
      * 删除用户
      */
     public void deleteUser(String id) {
@@ -92,7 +109,7 @@ public class UserService {
         // 登录成功，生成 JWT token
         JwtToken jwt = new JwtToken();
 
-        String token = jwt.generateToken(username);
+        String token = jwt.generateToken(res.getId(),res.getRole());
         System.out.println(token);
 
         HashMap<String,Object> map = new HashMap<>();
