@@ -25,7 +25,7 @@ public class ProductionBatch {
     private String color;
 
     @NotNull(message = "尺码不能为空")
-    private List<String> size;
+    private String size;
 
     @Positive(message = "数量必须大于 0")
     private int quantity;
@@ -40,7 +40,7 @@ public class ProductionBatch {
     private String qrCode;
 
     @NotNull(message = "状态不能为空")
-    private List<String> status;
+    private String status;
 
     // Getters and Setters
     public String getId() {
@@ -75,11 +75,11 @@ public class ProductionBatch {
         this.color = color;
     }
 
-    public List<String> getSize() {
+    public String getSize() {
         return size;
     }
 
-    public void setSize(List<String> size) {
+    public void setSize(String size) {
         this.size = size;
     }
 
@@ -115,11 +115,11 @@ public class ProductionBatch {
         this.qrCode = qrCode;
     }
 
-    public List<String> getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(List<String> status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 }
