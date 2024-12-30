@@ -1,7 +1,10 @@
-package com.kano.springbootmongoclothesapi.controller.User;
+package com.kano.springbootmongoclothesapi.controller.Admin;
 
+import com.kano.springbootmongoclothesapi.common.ApiResponse;
 import com.kano.springbootmongoclothesapi.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import com.kano.springbootmongoclothesapi.service.UserService;
 import java.util.List;
@@ -13,8 +16,8 @@ import org.springframework.http.ResponseEntity;
  * 用户增删查改
  */
 @RestController
-@RequestMapping("/api/users")
-public class UserController {
+@RequestMapping("/api/admin/users")
+public class AdminController {
 
     @Autowired
     private UserService userService;
@@ -33,12 +36,19 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
+        // 密码加密处理
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        user.setPassword(passwordEncoder.encode(user.getPassword()));  // 可使用 BCrypt 加密
+
         User createdUser = userService.createUser(user);
         return ResponseEntity.ok(createdUser);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<User> updateUser(@PathVariable String id, @Valid @RequestBody User user) {
+        // 密码加密处理
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        user.setPassword(passwordEncoder.encode(user.getPassword()));  // 可使用 BCrypt 加密
         User updatedUser = userService.updateUser(id, user);
         if (updatedUser != null) {
             return ResponseEntity.ok(updatedUser);
@@ -47,8 +57,8 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable String id) {
+    public ApiResponse deleteUser(@PathVariable String id) {
         userService.deleteUser(id);
-        return ResponseEntity.noContent().build();
+        return new ApiResponse(200,"删除成功",null);
     }
 }
