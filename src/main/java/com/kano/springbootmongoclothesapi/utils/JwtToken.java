@@ -15,7 +15,7 @@ public class JwtToken {
     public String generateToken(String userId,String role) {
         return Jwts.builder()
                 .setSubject(userId + "|" + role)
-                .setExpiration(new Date(System.currentTimeMillis() + 3600000)) // 设置 token 的过期时间（1小时）
+                .setExpiration(new Date(System.currentTimeMillis() + 360000000))
                 .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
     }

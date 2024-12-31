@@ -30,13 +30,13 @@ public class ProductionBatch {
     @Positive(message = "数量必须大于 0")
     private int quantity;
 
-    @NotBlank(message = "生产商ID不能为空")
+//    @NotBlank(message = "生产商用户ID不能为空")
     private String producerId;
 
     @NotNull(message = "生产日期不能为空")
     private Date productionDate;
 
-    @NotBlank(message = "二维码不能为空")
+//    @NotBlank(message = "二维码不能为空")
     private String qrCode;
 
     @NotNull(message = "状态不能为空")

@@ -1,10 +1,10 @@
-package com.kano.springbootmongoclothesapi.controller.InventoryRecord;
+package com.kano.springbootmongoclothesapi.controller.WarehouseRecord;
 
-import com.kano.springbootmongoclothesapi.model.InventoryRecord;
 import com.kano.springbootmongoclothesapi.model.ProductionBatch;
+import com.kano.springbootmongoclothesapi.model.PurchaseRecord;
 import com.kano.springbootmongoclothesapi.model.WarehouseRecord;
-import com.kano.springbootmongoclothesapi.service.InventoryRecordService;
 import com.kano.springbootmongoclothesapi.service.ProductionBatchRecordService;
+import com.kano.springbootmongoclothesapi.service.WarehouseRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -15,29 +15,29 @@ import java.util.HashMap;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/inventory-records")
-public class InventoryRecordController {
+@RequestMapping("/api/warehouse-records")
+public class WarehouseRecordController {
 
     @Autowired
-    private InventoryRecordService service;
+    private WarehouseRecordService service;
     private ProductionBatchRecordService batchService;
 
-    public InventoryRecordController(ProductionBatchRecordService batchService) {
+    public WarehouseRecordController(ProductionBatchRecordService batchService) {
         this.batchService = batchService;
     }
 
-    // 添加库存记录
+    // 添加入库记录,并计入库存
     @PostMapping
-    public ResponseEntity<InventoryRecord> createInventoryRecord(
-            @Validated @RequestBody InventoryRecord record) {
-        InventoryRecord createdRecord = service.addInventoryRecord(record);
+    public ResponseEntity<WarehouseRecord> createWarehouseRecord(
+            @Validated @RequestBody WarehouseRecord record) throws Exception{
+        WarehouseRecord createdRecord = service.addWarehouseRecordAndInventory(record);
         return ResponseEntity.ok(createdRecord);
     }
 
-    // 列出所有库存记录
+    // 列出所有入库记录
     @GetMapping
     public ResponseEntity<List<HashMap<String,Object>>> getAllRecords() {
-        List<InventoryRecord> records = service.getAllInventoryRecords();
+        List<WarehouseRecord> records = service.getAllWarehouseRecords();
         List<ProductionBatch> batchRecords = batchService.getAllProductionBatches();
 
         List<HashMap<String,Object>> newWarehouseRecords = new ArrayList<>();
@@ -46,7 +46,7 @@ public class InventoryRecordController {
         for (int i = 0; i < records.size(); i++) {
             HashMap<String, Object> map = new HashMap<>();
             map.put("quantity",records.get(i).getCurrentQuantity());
-            map.put("InventoryDate",records.get(i).getLastUpdated());
+            map.put("WarehouseDate",records.get(i).getLastUpdated());
 
             map.put("batchNumber",batchRecords.get(i).getBatchNumber());
             map.put("style",batchRecords.get(i).getStyle());
@@ -60,6 +60,4 @@ public class InventoryRecordController {
 
         return ResponseEntity.ok(newWarehouseRecords);
     }
-
-    //修改库存数量
 }

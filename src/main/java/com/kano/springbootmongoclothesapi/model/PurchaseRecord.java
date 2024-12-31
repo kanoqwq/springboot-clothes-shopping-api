@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
+import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 
@@ -18,17 +19,17 @@ public class PurchaseRecord {
     @NotBlank(message = "批次ID不能为空")
     private String batchId;
 
-    @NotBlank(message = "销售商ID不能为空")
+//    @NotBlank(message = "销售商ID不能为空")
     private String sellerId;
 
-    @NotNull(message = "采购日期不能为空")
+//    @NotNull(message = "采购日期不能为空")
     private Date purchaseDate;
 
-    @Positive(message = "采购数量必须大于 0")
+//    @Positive(message = "采购数量必须大于 0")
     private int quantity;
 
-    @NotNull(message = "状态不能为空")
-    private List<String> status;
+//    @NotNull(message = "状态不能为空")
+    private String status;
 
     // Getters and Setters
     public String getId() {
@@ -71,11 +72,14 @@ public class PurchaseRecord {
         this.quantity = quantity;
     }
 
-    public List<String> getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(List<String> status) {
+    public void setStatus(String status) {
         this.status = status;
+    }
+    public void setCreatedAt(Instant createdAt) {
+        this.purchaseDate = Date.from(createdAt);
     }
 }

@@ -17,13 +17,13 @@ public class SaleRecord {
     @NotBlank(message = "批次ID不能为空")
     private String batchId;
 
-    @NotBlank(message = "销售商ID不能为空")
+//    @NotBlank(message = "销售商ID不能为空")
     private String sellerId;
 
-    @NotNull(message = "销售日期不能为空")
+//    @NotNull(message = "销售日期不能为空")
     private Date saleDate;
 
-    @Positive(message = "销售数量必须大于 0")
+//    @Positive(message = "销售数量必须大于 0")
     private int count;
 
     // Getters and Setters
