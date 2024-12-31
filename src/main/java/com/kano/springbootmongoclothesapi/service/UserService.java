@@ -110,7 +110,6 @@ public class UserService {
         JwtToken jwt = new JwtToken();
 
         String token = jwt.generateToken(res.getId(),res.getRole());
-        System.out.println(token);
 
         HashMap<String,Object> map = new HashMap<>();
         map.put("token", token);

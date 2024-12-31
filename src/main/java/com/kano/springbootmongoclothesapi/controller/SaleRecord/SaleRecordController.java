@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/sale-records")
@@ -39,26 +40,30 @@ public class SaleRecordController {
     @GetMapping
     public ResponseEntity<List<HashMap<String,Object>>> getAllRecords() {
         List<SaleRecord> records = service.getAllSaleRecords();
-        List<ProductionBatch> batchRecords = batchService.getAllProductionBatches();
 
-        List<HashMap<String,Object>> newWarehouseRecords = new ArrayList<>();
+
+        List<HashMap<String,Object>> newList = new ArrayList<>();
 
         //合并
         for (int i = 0; i < records.size(); i++) {
             HashMap<String, Object> map = new HashMap<>();
-            map.put("count",records.get(i).getCount());
-            map.put("saleDate",records.get(i).getSaleDate());
+            //获取BatchId
+            String BatchId = records.get(i).getBatchId();
+            Optional<ProductionBatch> batchRecord = batchService.getProductionBatchById(BatchId);
 
-            map.put("batchNumber",batchRecords.get(i).getBatchNumber());
-            map.put("style",batchRecords.get(i).getStyle());
-            map.put("color",batchRecords.get(i).getColor());
-            map.put("size",batchRecords.get(i).getSize());
-            map.put("producerId",batchRecords.get(i).getProducerId());
-            map.put("productionDate",batchRecords.get(i).getProductionDate());
-
-            newWarehouseRecords.add(map);
+           if (batchRecord.isPresent()) {
+               map.put("count",records.get(i).getCount());
+               map.put("saleDate",records.get(i).getSaleDate());
+               map.put("batchNumber",batchRecord.get().getBatchNumber());
+               map.put("style",batchRecord.get().getStyle());
+               map.put("color",batchRecord.get().getColor());
+               map.put("size",batchRecord.get().getSize());
+               map.put("producerId",batchRecord.get().getProducerId());
+               map.put("productionDate",batchRecord.get().getProductionDate());
+               newList.add(map);
+           }
         }
 
-        return ResponseEntity.ok(newWarehouseRecords);
+        return ResponseEntity.ok(newList);
     }
 }

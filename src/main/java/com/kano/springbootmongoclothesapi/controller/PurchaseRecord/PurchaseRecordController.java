@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/purchase-records")
@@ -36,29 +37,33 @@ public class PurchaseRecordController {
     // 列出所有采购记录
     @GetMapping
     public ResponseEntity<List<HashMap<String,Object>>> getAllRecords() {
-        List<PurchaseRecord> purchaseRecords = service.getAllPurchaseRecords();
-        List<ProductionBatch> batchRecords = batchService.getAllProductionBatches();
 
-        List<HashMap<String,Object>> newPurchaseRecords = new ArrayList<>();
+        List<PurchaseRecord> records = service.getAllPurchaseRecords();
+
+        List<HashMap<String,Object>> newList = new ArrayList<>();
 
         //合并
-        for (int i = 0; i < purchaseRecords.size(); i++) {
+        for (int i = 0; i < records.size(); i++) {
             HashMap<String, Object> map = new HashMap<>();
-            map.put("status",purchaseRecords.get(i).getStatus());
-            map.put("quantity",purchaseRecords.get(i).getQuantity());
-            map.put("purchaseDate",purchaseRecords.get(i).getPurchaseDate());
+            //获取BatchId
+            String BatchId = records.get(i).getBatchId();
+            Optional<ProductionBatch> batchRecord = batchService.getProductionBatchById(BatchId);
 
-            map.put("batchNumber",batchRecords.get(i).getBatchNumber());
-            map.put("style",batchRecords.get(i).getStyle());
-            map.put("color",batchRecords.get(i).getColor());
-            map.put("size",batchRecords.get(i).getSize());
-            map.put("producerId",batchRecords.get(i).getProducerId());
-            map.put("productionDate",batchRecords.get(i).getProductionDate());
+            if (batchRecord.isPresent()) {
+                map.put("status",records.get(i).getStatus());
+                map.put("quantity",records.get(i).getQuantity());
+                map.put("purchaseDate",records.get(i).getPurchaseDate());
 
-            newPurchaseRecords.add(map);
+                map.put("batchNumber",batchRecord.get().getBatchNumber());
+                map.put("style",batchRecord.get().getStyle());
+                map.put("color",batchRecord.get().getColor());
+                map.put("size",batchRecord.get().getSize());
+                map.put("producerId",batchRecord.get().getProducerId());
+                map.put("productionDate",batchRecord.get().getProductionDate());
+                newList.add(map);
+            }
         }
 
-
-        return ResponseEntity.ok(newPurchaseRecords);
+        return ResponseEntity.ok(newList);
     }
 }
