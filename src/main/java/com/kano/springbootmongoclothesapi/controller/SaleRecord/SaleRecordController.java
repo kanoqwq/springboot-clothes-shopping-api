@@ -6,7 +6,9 @@ import com.kano.springbootmongoclothesapi.model.SaleRecord;
 import com.kano.springbootmongoclothesapi.model.WarehouseRecord;
 import com.kano.springbootmongoclothesapi.service.ProductionBatchRecordService;
 import com.kano.springbootmongoclothesapi.service.SaleRecordService;
+import com.kano.springbootmongoclothesapi.utils.RequestJWT;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -39,6 +41,8 @@ public class SaleRecordController {
     // 列出所有销售记录
     @GetMapping
     public ResponseEntity<List<HashMap<String,Object>>> getAllRecords() {
+        if (RequestJWT.getUserInfo() == null) return new ResponseEntity<>(HttpStatusCode.valueOf(401));
+
         List<SaleRecord> records = service.getAllSaleRecords();
 
 

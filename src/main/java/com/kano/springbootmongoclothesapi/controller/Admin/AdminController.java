@@ -2,7 +2,9 @@ package com.kano.springbootmongoclothesapi.controller.Admin;
 
 import com.kano.springbootmongoclothesapi.common.ApiResponse;
 import com.kano.springbootmongoclothesapi.model.User;
+import com.kano.springbootmongoclothesapi.utils.RequestJWT;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -23,12 +25,16 @@ public class AdminController {
     private UserService userService;
 
     @GetMapping
-    public List<User> getAllUsers() {
+    public Object getAllUsers() {
+        if (RequestJWT.getUserInfo() == null) return new ResponseEntity<>(HttpStatusCode.valueOf(401));
+
         return userService.getAllUsers();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable String id) {
+        if (RequestJWT.getUserInfo() == null) return new ResponseEntity<>(HttpStatusCode.valueOf(401));
+
         Optional<User> user = userService.getUserById(id);
         return user.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
@@ -36,6 +42,8 @@ public class AdminController {
 
     @PostMapping
     public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
+        if (RequestJWT.getUserInfo() == null) return new ResponseEntity<>(HttpStatusCode.valueOf(401));
+
         // 密码加密处理
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         user.setPassword(passwordEncoder.encode(user.getPassword()));  // 可使用 BCrypt 加密
@@ -46,6 +54,8 @@ public class AdminController {
 
     @PutMapping("/{id}")
     public ResponseEntity<User> updateUser(@PathVariable String id, @Valid @RequestBody User user) {
+        if (RequestJWT.getUserInfo() == null) return new ResponseEntity<>(HttpStatusCode.valueOf(401));
+
         // 密码加密处理
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         user.setPassword(passwordEncoder.encode(user.getPassword()));  // 可使用 BCrypt 加密
@@ -57,7 +67,9 @@ public class AdminController {
     }
 
     @DeleteMapping("/{id}")
-    public ApiResponse deleteUser(@PathVariable String id) {
+    public Object deleteUser(@PathVariable String id) {
+        if (RequestJWT.getUserInfo() == null) return new ResponseEntity<>(HttpStatusCode.valueOf(401));
+
         userService.deleteUser(id);
         return new ApiResponse(200,"删除成功",null);
     }

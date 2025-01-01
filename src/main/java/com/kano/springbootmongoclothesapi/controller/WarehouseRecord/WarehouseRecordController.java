@@ -5,7 +5,9 @@ import com.kano.springbootmongoclothesapi.model.PurchaseRecord;
 import com.kano.springbootmongoclothesapi.model.WarehouseRecord;
 import com.kano.springbootmongoclothesapi.service.ProductionBatchRecordService;
 import com.kano.springbootmongoclothesapi.service.WarehouseRecordService;
+import com.kano.springbootmongoclothesapi.utils.RequestJWT;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +33,7 @@ public class WarehouseRecordController {
     @PostMapping
     public ResponseEntity<WarehouseRecord> createWarehouseRecord(
             @Validated @RequestBody WarehouseRecord record) throws Exception{
+        if (RequestJWT.getUserInfo() == null) return new ResponseEntity<>(HttpStatusCode.valueOf(401));
         WarehouseRecord createdRecord = service.addWarehouseRecordAndInventory(record);
         return ResponseEntity.ok(createdRecord);
     }
@@ -38,6 +41,8 @@ public class WarehouseRecordController {
     // 列出所有入库记录
     @GetMapping
     public ResponseEntity<List<HashMap<String,Object>>> getAllRecords() {
+        if (RequestJWT.getUserInfo() == null) return new ResponseEntity<>(HttpStatusCode.valueOf(401));
+
         List<WarehouseRecord> records = service.getAllWarehouseRecords();
 
         List<HashMap<String,Object>> newList = new ArrayList<>();

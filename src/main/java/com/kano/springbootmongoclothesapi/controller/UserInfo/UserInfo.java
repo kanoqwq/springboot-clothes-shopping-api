@@ -6,6 +6,7 @@ import com.kano.springbootmongoclothesapi.utils.JwtToken;
 import com.kano.springbootmongoclothesapi.utils.RequestJWT;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.client.ClientHttpRequest;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -35,6 +36,8 @@ public class UserInfo {
     //修改用户
     @PutMapping
     public ResponseEntity<User> updateUser(@Valid @RequestBody User user) {
+        if (RequestJWT.getUserInfo() == null) return new ResponseEntity<>(HttpStatusCode.valueOf(401));
+
         HashMap<String,String> map =  RequestJWT.getUserInfo();
         String userId = map.get("userId");
         // 密码加密处理

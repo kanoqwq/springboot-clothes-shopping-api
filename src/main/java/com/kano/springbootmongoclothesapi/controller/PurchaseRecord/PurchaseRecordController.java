@@ -4,7 +4,9 @@ import com.kano.springbootmongoclothesapi.model.ProductionBatch;
 import com.kano.springbootmongoclothesapi.model.PurchaseRecord;
 import com.kano.springbootmongoclothesapi.service.ProductionBatchRecordService;
 import com.kano.springbootmongoclothesapi.service.PurchaseRecordService;
+import com.kano.springbootmongoclothesapi.utils.RequestJWT;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -37,6 +39,8 @@ public class PurchaseRecordController {
     // 列出所有采购记录
     @GetMapping
     public ResponseEntity<List<HashMap<String,Object>>> getAllRecords() {
+        if (RequestJWT.getUserInfo() == null) return new ResponseEntity<>(HttpStatusCode.valueOf(401));
+
 
         List<PurchaseRecord> records = service.getAllPurchaseRecords();
 

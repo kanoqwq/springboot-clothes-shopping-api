@@ -1,10 +1,9 @@
 package com.kano.springbootmongoclothesapi.controller;
 
 import com.kano.springbootmongoclothesapi.config.RolesConfig;
-import com.kano.springbootmongoclothesapi.model.User;
 import com.kano.springbootmongoclothesapi.utils.JwtToken;
 import com.kano.springbootmongoclothesapi.utils.RequestJWT;
-import jakarta.validation.Valid;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,8 +21,10 @@ import java.util.Map;
 public class DynamicRoute {
 
     @GetMapping
-    public ResponseEntity<List<Map<String, Object>>> getRouteList() {
+    public ResponseEntity<Object> getRouteList(){
         HashMap<String,String> map =  RequestJWT.getUserInfo();
+        if (map == null) return new ResponseEntity<>(HttpStatusCode.valueOf(401));
+
         String token = map.get("token");
         String role = JwtToken.getRole(token);
         return switch (role) {
