@@ -1,0 +1,26 @@
+Manifest-Version: 1.0
+Main-Class: com.kano.springbootmongoclothesapi.SpringbootMongoClothesApi
+ Application
+Class-Path: spring-boot-starter-web-3.4.1.jar bson-5.2.1.jar jakarta.val
+ idation-api-3.0.2.jar spring-data-mongodb-4.4.1.jar spring-boot-starter
+ -3.4.1.jar jboss-logging-3.6.1.Final.jar javax.activation-api-1.2.0.jar
+  spring-expression-6.2.1.jar jackson-module-parameter-names-2.18.2.jar 
+ slf4j-api-2.0.16.jar jai-imageio-core-1.4.0.jar logback-core-1.5.12.jar
+  javase-3.5.2.jar jaxb-api-2.4.0-b180830.0359.jar jakarta.annotation-ap
+ i-2.1.1.jar spring-jcl-6.2.1.jar spring-context-6.2.1.jar spring-boot-a
+ utoconfigure-3.4.1.jar jackson-annotations-2.18.2.jar spring-boot-3.4.1
+ .jar jul-to-slf4j-2.0.16.jar mongodb-driver-core-5.2.1.jar hibernate-va
+ lidator-8.0.2.Final.jar classmate-1.7.0.jar spring-aop-6.2.1.jar spring
+ -core-6.2.1.jar tomcat-embed-websocket-10.1.34.jar tomcat-embed-el-10.1
+ .34.jar spring-boot-starter-logging-3.4.1.jar tomcat-embed-core-10.1.34
+ .jar spring-security-crypto-6.4.2.jar lombok-1.18.36.jar core-3.5.2.jar
+  jackson-datatype-jsr310-2.18.2.jar log4j-to-slf4j-2.24.3.jar spring-tx
+ -6.2.1.jar mongodb-driver-sync-5.2.1.jar micrometer-observation-1.14.2.
+ jar jjwt-0.9.1.jar jackson-databind-2.18.2.jar logback-classic-1.5.12.j
+ ar snakeyaml-2.3.jar spring-boot-starter-json-3.4.1.jar spring-web-6.2.
+ 1.jar bson-record-codec-5.2.1.jar spring-boot-starter-data-mongodb-3.4.
+ 1.jar jcommander-1.82.jar spring-boot-starter-tomcat-3.4.1.jar jackson-
+ core-2.18.2.jar spring-webmvc-6.2.1.jar spring-security-core-5.8.0.jar 
+ jackson-datatype-jdk8-2.18.2.jar spring-data-commons-3.4.1.jar micromet
+ er-commons-1.14.2.jar spring-beans-6.2.1.jar log4j-api-2.24.3.jar
+
