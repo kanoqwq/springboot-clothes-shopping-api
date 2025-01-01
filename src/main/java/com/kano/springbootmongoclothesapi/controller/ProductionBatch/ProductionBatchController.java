@@ -30,6 +30,7 @@ public class ProductionBatchController {
         HashMap<String,String> map =  RequestJWT.getUserInfo();
         String userId = map.get("userId");
         batch.setProducerId(userId);
+        batch.setStatus("未签收");
 
         //先插入数据库，然后再创建二维码，再次插入数据库
         ProductionBatch createdBatch = service.addProductionBatch(callback_url,batch);
