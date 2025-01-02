@@ -72,5 +72,12 @@ public class InventoryRecordController {
         return ResponseEntity.ok(newList);
     }
 
-    //修改库存数量
+    // 列出特定库存记录
+    @GetMapping("/{batchId}")
+    public ResponseEntity<InventoryRecord> getRecordsById(@PathVariable String batchId) throws  Exception{
+        if (RequestJWT.getUserInfo() == null) return new ResponseEntity<>(HttpStatusCode.valueOf(401));
+        Optional<InventoryRecord> records = service.getInventoryRecordById(batchId);
+        if (records.isEmpty()) throw new Exception("没有找到该库存");
+        return ResponseEntity.ok(records.get());
+    }
 }
